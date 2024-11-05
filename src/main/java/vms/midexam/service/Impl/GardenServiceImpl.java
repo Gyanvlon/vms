@@ -1,5 +1,6 @@
 package vms.midexam.service.Impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vms.midexam.Repository.GardenRepository;
@@ -16,7 +17,6 @@ public class GardenServiceImpl implements GardenService {
     public Garden save(Garden garden) {
         return gardenRepository.save(garden);
     }
-
     @Override
     public Garden findById(Integer id) {
         return gardenRepository.findById(id).get();
@@ -38,6 +38,7 @@ public class GardenServiceImpl implements GardenService {
 
 
     @Override
+    @Transactional
     public List<Garden> findAll() {
         return gardenRepository.findAll();
     }

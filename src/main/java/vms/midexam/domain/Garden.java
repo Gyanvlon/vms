@@ -1,10 +1,7 @@
 package vms.midexam.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ public class Garden {
     private Integer id;
     private String name;
     private Double size;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "plant_id")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "garden")
     List<Plant> plants = new ArrayList<>();
 }

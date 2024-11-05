@@ -1,5 +1,6 @@
 package vms.midexam;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import vms.midexam.service.PlantService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formattable;
 import java.util.List;
 
 @SpringBootApplication
@@ -24,88 +26,105 @@ public class MidexamApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(MidexamApplication.class, args);
 	}@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		Garden garden = new Garden();
-		garden.setName("vegetable patch");
+		garden.setName("Vegetable Patch");
 		garden.setSize(50.0);
+		Garden savedGarden = gardenService.save(garden);
+
 		Garden garden1 = new Garden();
-		garden1.setName("Herb patch");
+		garden1.setName("Herb Patch");
 		garden1.setSize(20.0);
+		Garden savedGarden1 = gardenService.save(garden1);
+
+		System.out.println("===============================");
+		System.out.println("Gardens saved");
+		System.out.println(savedGarden);
+		System.out.println(savedGarden1);
+
+		// find garden by id
+		System.out.println("===============================");
+		System.out.println("Garden found by id");
+		System.out.println(gardenService.findById(1));
+
+		// update garden by id
+//		System.out.println("===============================");
+//		Garden garden3 = new Garden();
+//		garden3.setName("Vegetable Patch");
+//		garden3.setSize(30.0);
+//		System.out.println(gardenService.update(1, garden3));
+
+
+
+		// find  garden by id
+		System.out.println("===============================");
+
+		Garden managedGarden1 = gardenService.findById(savedGarden1.getId());
+		Garden managedGarden2 = gardenService.findById(savedGarden.getId());
+
+
+		// Step 2: Create and Associate Plants with Managed Gardens
 		Plant plant = new Plant();
 		plant.setName("Tomato");
 		plant.setType("Vegetable");
+		plant.setPlantedDate(LocalDate.of(2024, 3, 10));
+		plant.setGarden(managedGarden1);
 
 		Plant plant1 = new Plant();
-		plant1.setName("carrot");
+		plant1.setName("Carrot");
 		plant1.setType("Vegetable");
+		plant1.setPlantedDate(LocalDate.of(2024, 1, 10));
+		plant1.setGarden(managedGarden2);
+
 		Plant plant2 = new Plant();
-		plant2.setName("basil");
-		plant2.setType("herb");
-		List<Plant> plants = new ArrayList<Plant>();
-		plants.add(plant);
-		plants.add(plant1);
-		plants.add(plant2);
-//		garden1.setPlants(plants);
-		garden.setPlants(plants);
-		// save garden
+		plant2.setName("Basil");
+		plant2.setType("Herb");
+		plant2.setPlantedDate(LocalDate.of(2024, 2, 10));
+		plant2.setGarden(managedGarden1);
+
+		// Step 3: Save Plants
 		System.out.println("===============================");
-		System.out.println("Garden saved");
-		 System.out.println(gardenService.save(garden));
-		System.out.println(gardenService.save(garden1));
-		// update garden
-		Garden garden2 = gardenService.findById(1);
-		garden2.setName("Vegetable patch 2");
-		System.out.println(gardenService.update(1, garden2));
+		System.out.println("Plants saved");
+		System.out.println(plantService.save(plant));
+		System.out.println(plantService.save(plant1));
+		System.out.println(plantService.save(plant2));
 
-		// get garden by id
+//		System.out.println("===============================");
+//		System.out.println("Plants found by id");
+//		System.out.println(plantService.findById(2));
+
+		// update plant by id
+//		System.out.println("===============================");
+//		System.out.println("Plants updated with id");
+//		Plant plant3 = new Plant();
+//		plant3.setName("Lettuce");
+//		plant3.setType("Vegetable");
+//		plant3.setPlantedDate(LocalDate.of(2024, 3, 10));
+//		plant3.setGarden(managedGarden1);
+//		System.out.println(plantService.update(1, plant3)); plantService.update(2, plant3);
+
+		// delete plant by id
+//		System.out.println("===============================");
+//		System.out.println("Plants deleted with id");
+//		System.out.println(plantService.delete(3));
+
+		// find all gardens
 		System.out.println("===============================");
-		System.out.println("Garden get by id");
-		System.out.println(gardenService.findById(1));
-
-		// get all garden
+		System.out.println("Gardens list sort with size");
+		List<Garden> gardens = gardenService.findAll();
+		gardens.sort((g1, g2) -> g1.getSize().compareTo(g2.getSize()));
+		for (Garden g : gardens) {
+			System.out.println(g);
+		}
+		// Step 4: Find all Plants
 		System.out.println("===============================");
-		System.out.println("All garden");
-		 List<Garden> gardenList = gardenService.findAll();
-		gardenList.sort((g1, g2) -> g1.getSize().compareTo(g2.getSize()));
-		System.out.println(gardenList);
-		// delete garden
-
-//		System.out.println("All garden");
-//		System.out.println(gardenService.findAll());
-//		System.out.println("===============================");
-
-
-//		Plant plant = new Plant();
-//		plant.setName("Plant 1");
-//		plant.setSize(1.0);
-//		plantService.save(plant);
-//		System.out.println("===============================");
-//		System.out.println("Plant saved");
-//		System.out.print(plant);
-//		System.out.println("===============================");
-//        // get plant by id
-//		Plant plant1 = plantService.findById(1);
-//		System.out.println("===============================");
-//		System.out.println("Plant get by id");
-//		System.out.print(plant1);
-//		System.out.println("===============================");
-//		// update plant
-//		Plant plant2 = new Plant();
-//		plant2.setName("Plant 2");
-//		plant2.setSize(6.0);
-//		System.out.println("===============================");
-//		System.out.println("Plant updated");
-//		System.out.print(plantService.update(1, plant2));
-//		System.out.println("===============================");
-//		// delete plant
-//		System.out.print(plantService.delete(1));
-//		System.out.println("===============================");
-//		// get all plants
-//		System.out.println("===============================");
-//		System.out.println("All plants");
-//		System.out.println(plantService.findAll());
-//		System.out.println("===============================");
-		// save garden
+		System.out.println("Plants list sort with planted date");
+		List<Plant> plants = plantService.findAll();
+		plants.sort((p1, p2) -> p1.getPlantedDate().compareTo(p2.getPlantedDate()));
+		for (Plant p : plants) {
+			System.out.println(p);
+		}
 
 	}
 }
