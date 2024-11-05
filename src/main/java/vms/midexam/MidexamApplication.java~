@@ -42,15 +42,38 @@ public class MidexamApplication implements CommandLineRunner {
 		plant2.setName("basil");
 		plant2.setType("herb");
 		List<Plant> plants = new ArrayList<Plant>();
-		garden1.setPlants(plants);
+		plants.add(plant);
+		plants.add(plant1);
+		plants.add(plant2);
+//		garden1.setPlants(plants);
 		garden.setPlants(plants);
 		// save garden
 		System.out.println("===============================");
 		System.out.println("Garden saved");
-		gardenService.save(garden);
-		gardenService.save(garden1);
+		 System.out.println(gardenService.save(garden));
+		System.out.println(gardenService.save(garden1));
 		// update garden
-		Garden garden2 = gardenService().findById(1);
+		Garden garden2 = gardenService.findById(1);
+		garden2.setName("Vegetable patch 2");
+		System.out.println(gardenService.update(1, garden2));
+
+		// get garden by id
+		System.out.println("===============================");
+		System.out.println("Garden get by id");
+		System.out.println(gardenService.findById(1));
+
+		// get all garden
+		System.out.println("===============================");
+		System.out.println("All garden");
+		 List<Garden> gardenList = gardenService.findAll();
+		gardenList.sort((g1, g2) -> g1.getSize().compareTo(g2.getSize()));
+		System.out.println(gardenList);
+		// delete garden
+
+//		System.out.println("All garden");
+//		System.out.println(gardenService.findAll());
+//		System.out.println("===============================");
+
 
 //		Plant plant = new Plant();
 //		plant.setName("Plant 1");
@@ -83,8 +106,6 @@ public class MidexamApplication implements CommandLineRunner {
 //		System.out.println(plantService.findAll());
 //		System.out.println("===============================");
 		// save garden
-
-
 
 	}
 }

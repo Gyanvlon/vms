@@ -26,8 +26,7 @@ public class GardenServiceImpl implements GardenService {
     public Garden update(Integer id, Garden garden) {
         Garden garden1 = gardenRepository.findById(id).get();
         garden1.setName(garden.getName());
-        garden1.setPlantType(garden.getPlantType());
-        garden1.setPlantDate(garden.getPlantDate());
+        garden1.setSize(garden.getSize());
         return gardenRepository.save(garden1);
     }
 

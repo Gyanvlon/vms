@@ -26,7 +26,7 @@ public class PlantServiceImpl implements PlantService {
     public Plant update(Integer id, Plant plant) {
         Plant oldPlant = plantRepository.findById(id).get();
         oldPlant.setName(plant.getName());
-        oldPlant.setType(plant.getType());
+        oldPlant.setSize(plant.getSize());
         return plantRepository.save(oldPlant);
     }
 

@@ -40,6 +40,6 @@ public class GardenServiceImpl implements GardenService {
 
     @Override
     public List<Garden> findAll() {
-        return List.of();
+        return gardenRepository.findAll();
     }
 }
